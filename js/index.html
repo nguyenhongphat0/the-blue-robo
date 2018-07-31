@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>The Blue Robo</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous">
+    <style>
+        html, body, #app, #background {
+            width: 100%;
+            height: 100%;
+        }
+        #app {
+            display: table;
+        }
+        #background {
+            background-color: #3f51b5;
+            display: table-cell;
+            vertical-align: bottom;
+        }
+        .white-text {
+            color: white;
+        }
+        img {
+            max-width: 100%;
+            max-height: 100%;
+        }
+        .btn-full {
+            width: 100%;
+            height: 100%;
+        }
+        .badge {
+            cursor: pointer;
+        }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+        <div id="background">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-2">
+                                        <img :src="avatar" alt="">
+                                    </div>
+                                    <div class="col-8">
+                                        <h4 class="card-title">I want to increase the view of user <span class="badge badge-info" @click="update('id')">{{id}}</span> by <span class="badge badge-success" @click="update('views')">{{views}}</span> views using this token: <span class="badge badge-pill badge-dark" @click="update('token')">{{token}}</span></h4>
+                                        <p class="card-text">{{user}}</p>
+                                    </div>
+                                    <div class="col-2">
+                                        <button class="btn btn-dark btn-full" style="display: block; margin: auto" @click="fetch()">
+                                                <b>GO</b> <br> <span class="badge badge-pill badge-info">{{status}}</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+    <script>
+        var app = new Vue({
+            el: '#app',
+            data: {
+                host: 'https://argo.blued.cn',
+                id: 'id',
+                views: 'views',
+                token: 'token',
+                user: '',
+                status: 'ready',
+                avatar: 'https://bootswatch.com/_assets/img/logo-nav.svg'
+            },
+            methods: {
+                update(data) {
+                    var old = this[data].slice();
+                    this[data] = prompt(data + ': ');
+                    if (this[data] == null || this[data].trim() == '') {
+                        this[data] = old;
+                    }
+                },
+                fetch() {
+                    fetch(`${this.host}/users/123`, {
+                        method: "GET",
+                        headers: {
+                            "Authorization": `Basic ${this.token}`
+                        }
+                    }).then((v) => {
+                        console.log(v);
+                    })
+                }
+            }
+        })
+    </script>
+  </body>
+</html>
