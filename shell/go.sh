@@ -1,8 +1,11 @@
 c=0
 while true
 url=$(<url)
+user=$(<user)
+cmd=`printf "curl --output log -H @header $url$user"`
 do
 	c=`expr $c + 1`
-	printf "\n$c"
-	curl -H @header $url --output log
+	echo $c
+	echo $cmd
+	$cmd
 done
